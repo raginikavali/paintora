@@ -10,14 +10,21 @@ function setCorsHeaders() {
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
     $allowedOrigins = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'https://frontend-gilt-psi-91.vercel.app',
-    'https://frontend-git-main-raginikavalis-projects.vercel.app',
-    'https://frontend-ds7rhtai5-raginikavalis-projects.vercel.app'
-];
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        'https://frontend-gilt-psi-91.vercel.app',
+        'https://frontend-git-main-raginikavalis-projects.vercel.app',
+        'https://frontend-ds7rhtai5-raginikavalis-projects.vercel.app'
+    ];
 
-    if (in_array($origin, $allowedOrigins, true)) {
+    // Allow the listed Vercel URLs and future deployment URLs
+    if (
+        in_array($origin, $allowedOrigins, true) ||
+        preg_match(
+            '/^https:\/\/frontend-[a-z0-9]+-raginikavalis-projects\.vercel\.app$/',
+            $origin
+        )
+    ) {
         header("Access-Control-Allow-Origin: {$origin}");
         header('Access-Control-Allow-Credentials: true');
     }
@@ -26,7 +33,7 @@ function setCorsHeaders() {
     header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
     header("Content-Type: application/json; charset=UTF-8");
 
-    // Handle preflight OPTIONS request from browser
+    // Handle browser preflight OPTIONS request
     if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
         http_response_code(200);
         exit();
