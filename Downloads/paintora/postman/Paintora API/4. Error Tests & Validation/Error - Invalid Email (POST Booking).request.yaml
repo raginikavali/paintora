@@ -1,0 +1,30 @@
+$kind: http-request
+description: Tests validation rejection of malformed email address.
+url: "{{base_url}}/bookings.php"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "service_id": 1,
+      "customer_name": "Test User",
+      "customer_email": "not-a-valid-email",
+      "customer_phone": "9876543210",
+      "address": "123 Test Street, Bengaluru",
+      "booking_date": "2026-11-20",
+      "booking_time": "10:00 AM"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 422 Unprocessable Entity", function () {
+          pm.response.to.have.status(422);
+      });
+      pm.test("Email field error returned", function () {
+          var json = pm.response.json();
+          pm.expect(json.errors).to.have.property('customer_email');
+      });
+    language: text/javascript
+order: 2000

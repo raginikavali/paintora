@@ -1,0 +1,30 @@
+$kind: http-request
+description: "Tests validation rule: booking date cannot be in the past."
+url: "{{base_url}}/bookings.php"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "service_id": 1,
+      "customer_name": "Test User",
+      "customer_email": "test@example.com",
+      "customer_phone": "9876543210",
+      "address": "123 Test Street, Bengaluru",
+      "booking_date": "2020-01-01",
+      "booking_time": "10:00 AM"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 422 Unprocessable Entity", function () {
+          pm.response.to.have.status(422);
+      });
+      pm.test("Past date error message returned", function () {
+          var json = pm.response.json();
+          pm.expect(json.errors.booking_date).to.include('past');
+      });
+    language: text/javascript
+order: 3000

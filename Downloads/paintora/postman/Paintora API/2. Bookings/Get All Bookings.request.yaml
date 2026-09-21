@@ -1,0 +1,21 @@
+$kind: http-request
+description: Fetches all customer bookings with relational JOIN to service data.
+url: "{{base_url}}/bookings.php"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Bookings list contains relational service object", function () {
+          var json = pm.response.json();
+          pm.expect(json.success).to.be.true;
+          pm.expect(json.data).to.be.an('array');
+          if (json.data.length > 0) {
+              pm.expect(json.data[0]).to.have.property('service');
+              pm.expect(json.data[0].service).to.have.property('name');
+          }
+      });
+    language: text/javascript
+order: 1000

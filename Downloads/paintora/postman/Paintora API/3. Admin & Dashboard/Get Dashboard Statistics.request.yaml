@@ -1,0 +1,22 @@
+$kind: http-request
+description: Fetches aggregated metrics directly from MySQL (total services, total bookings, pending, completed, estimated revenue).
+url: "{{base_url}}/admin.php?action=stats"
+method: GET
+queryParams:
+  action: stats
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Dashboard metrics calculated correctly", function () {
+          var json = pm.response.json();
+          pm.expect(json.success).to.be.true;
+          pm.expect(json.data).to.have.property('total_services');
+          pm.expect(json.data).to.have.property('total_bookings');
+          pm.expect(json.data).to.have.property('pending_bookings');
+          pm.expect(json.data).to.have.property('completed_bookings');
+      });
+    language: text/javascript
+order: 1000

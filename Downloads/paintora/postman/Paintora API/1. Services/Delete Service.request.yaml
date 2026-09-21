@@ -1,0 +1,18 @@
+$kind: http-request
+description: Deletes the recently created test service.
+url: "{{base_url}}/services.php?id={{created_service_id}}"
+method: DELETE
+queryParams:
+  id: "{{created_service_id}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Verify deletion message", function () {
+          var json = pm.response.json();
+          pm.expect(json.success).to.be.true;
+      });
+    language: text/javascript
+order: 6000

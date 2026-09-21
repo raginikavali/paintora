@@ -1,0 +1,26 @@
+$kind: http-request
+description: Tests 422 Unprocessable Entity when required fields are missing.
+url: "{{base_url}}/services.php"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": ""
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 422 Unprocessable Entity", function () {
+          pm.response.to.have.status(422);
+      });
+      pm.test("Validation error structure returned", function () {
+          var json = pm.response.json();
+          pm.expect(json.success).to.be.false;
+          pm.expect(json.error).to.eql('VALIDATION_ERROR');
+          pm.expect(json.errors).to.have.property('name');
+      });
+    language: text/javascript
+order: 1000

@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: f0b0b79a-9e7d-4481-8a90-288c4f470ae9
+
+localResources:
+  collections:
+    - ../Paintora API

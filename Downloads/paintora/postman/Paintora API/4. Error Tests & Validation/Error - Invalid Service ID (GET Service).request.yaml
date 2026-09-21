@@ -1,0 +1,18 @@
+$kind: http-request
+description: Tests 404 response for non-existent service ID.
+url: "{{base_url}}/services.php?id=99999"
+method: GET
+queryParams:
+  id: "99999"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 404 Not Found", function () {
+          pm.response.to.have.status(404);
+      });
+      pm.test("Error code is SERVICE_NOT_FOUND", function () {
+          var json = pm.response.json();
+          pm.expect(json.error).to.eql('SERVICE_NOT_FOUND');
+      });
+    language: text/javascript
+order: 4000

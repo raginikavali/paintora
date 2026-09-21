@@ -1,0 +1,31 @@
+$kind: http-request
+description: Creates a new painting service in MySQL.
+url: "{{base_url}}/services.php"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Waterproof Balcony Coating",
+      "description": "Multi-layer elastomeric waterproofing and protective acrylic painting for balconies, terraces, and wet outdoor floors.",
+      "category": "Exterior",
+      "price": 3499,
+      "duration": "2 Days",
+      "image": "/images/exterior.jpg"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201 Created", function () {
+          pm.response.to.have.status(201);
+      });
+      pm.test("Returns created service with newly generated ID", function () {
+          var json = pm.response.json();
+          pm.expect(json.success).to.be.true;
+          pm.expect(json.data.id).to.be.a('number');
+          pm.collectionVariables.set("created_service_id", json.data.id);
+      });
+    language: text/javascript
+order: 4000

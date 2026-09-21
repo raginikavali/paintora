@@ -1,0 +1,19 @@
+$kind: http-request
+description: Fetches a single painting service by its primary key ID.
+url: "{{base_url}}/services.php?id={{service_id}}"
+method: GET
+queryParams:
+  id: "{{service_id}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Returns correct service details", function () {
+          var json = pm.response.json();
+          pm.expect(json.success).to.be.true;
+          pm.expect(json.data.id).to.eql(parseInt(pm.collectionVariables.get("service_id")));
+      });
+    language: text/javascript
+order: 3000

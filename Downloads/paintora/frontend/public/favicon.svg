@@ -1,0 +1,21 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pFaviconGrad" x1="4" y1="6" x2="44" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C85A32" />
+      <stop offset="1" stop-color="#E67E22" />
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="10" fill="#FAF8F5" />
+  <!-- Roller Handle / Stem -->
+  <rect x="10" y="9" width="6.5" height="30" rx="3.25" fill="#1C1C1C" />
+  <!-- Roller Head forming loop of P -->
+  <path
+    d="M13 18 C13 12 18 9 25 9 L30 9 C36 9 41 14 41 20 C41 26 36 31 30 31 L16 31"
+    stroke="url(#pFaviconGrad)"
+    stroke-width="6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <!-- Wet paint drop -->
+  <path d="M30 17 C30 17 32 19.5 32 21 C32 22 31.2 22.8 30 22.8 C28.8 22.8 28 22 28 21 C28 19.5 30 17 30 17 Z" fill="#FFFFFF" opacity="0.9" />
+</svg>

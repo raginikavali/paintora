@@ -1,0 +1,33 @@
+$kind: http-request
+description: Submits a new customer painting appointment.
+url: "{{base_url}}/bookings.php"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "service_id": 1,
+      "customer_name": "Ananya Verma",
+      "customer_email": "ananya.verma@example.com",
+      "customer_phone": "9871234567",
+      "address": "Apt 304, Sunshine Towers, Indiranagar, Bengaluru",
+      "booking_date": "2026-10-15",
+      "booking_time": "10:00 AM"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201 Created", function () {
+          pm.response.to.have.status(201);
+      });
+      pm.test("Booking confirmed with Pending status", function () {
+          var json = pm.response.json();
+          pm.expect(json.success).to.be.true;
+          pm.expect(json.data.status).to.eql('Pending');
+          pm.expect(json.data.id).to.be.above(1000);
+          pm.collectionVariables.set("new_booking_id", json.data.id);
+      });
+    language: text/javascript
+order: 3000

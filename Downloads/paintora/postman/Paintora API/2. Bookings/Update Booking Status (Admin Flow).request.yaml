@@ -1,0 +1,26 @@
+$kind: http-request
+description: Admin updates booking status to Confirmed.
+url: "{{base_url}}/bookings.php?id={{new_booking_id}}"
+method: PUT
+headers:
+  Content-Type: application/json
+queryParams:
+  id: "{{new_booking_id}}"
+body:
+  type: text
+  content: |-
+    {
+      "status": "Confirmed"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Booking status updated to Confirmed", function () {
+          var json = pm.response.json();
+          pm.expect(json.data.status).to.eql('Confirmed');
+      });
+    language: text/javascript
+order: 4000

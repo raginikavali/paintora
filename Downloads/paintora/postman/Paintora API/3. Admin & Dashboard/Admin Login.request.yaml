@@ -1,0 +1,28 @@
+$kind: http-request
+description: Verifies admin credentials using PHP password_verify.
+url: "{{base_url}}/admin.php?action=login"
+method: POST
+headers:
+  Content-Type: application/json
+queryParams:
+  action: login
+body:
+  type: text
+  content: |-
+    {
+      "email": "admin@paintora.com",
+      "password": "admin123"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Admin authenticated", function () {
+          var json = pm.response.json();
+          pm.expect(json.success).to.be.true;
+          pm.expect(json.data.email).to.eql('admin@paintora.com');
+      });
+    language: text/javascript
+order: 2000

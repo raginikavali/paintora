@@ -1,0 +1,31 @@
+$kind: http-request
+description: Updates details for an existing service.
+url: "{{base_url}}/services.php?id={{created_service_id}}"
+method: PUT
+headers:
+  Content-Type: application/json
+queryParams:
+  id: "{{created_service_id}}"
+body:
+  type: text
+  content: |-
+    {
+      "name": "Waterproof Balcony & Terrace Coating",
+      "description": "Updated high-grade elastomeric waterproofing with 5-year anti-leak warranty.",
+      "category": "Exterior",
+      "price": 3799,
+      "duration": "2 Days",
+      "image": "/images/exterior.jpg"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Verify price updated", function () {
+          var json = pm.response.json();
+          pm.expect(json.data.price).to.eql(3799);
+      });
+    language: text/javascript
+order: 5000

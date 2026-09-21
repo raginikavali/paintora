@@ -1,0 +1,6 @@
+$kind: collection
+description: Comprehensive Postman collection for Paintora Home Painting Service Booking Platform REST APIs. Includes CRUD for Services and Bookings, relational queries, admin dashboard stats, and error validation scenarios.
+variables:
+  base_url: http://localhost/paintora/backend/api
+  service_id: "1"
+  booking_id: "1001"
