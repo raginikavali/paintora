@@ -12,7 +12,7 @@ function setCorsHeaders() {
     $allowedOrigins = [
         'http://localhost:5173',
         'http://127.0.0.1:5173',
-        'https://paintora.vercel.app'
+        'https://frontend-r40785n6o-raginikavalis-projects.vercel.app'
     ];
 
     if (in_array($origin, $allowedOrigins, true)) {
